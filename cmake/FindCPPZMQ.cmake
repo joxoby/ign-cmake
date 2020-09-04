@@ -34,6 +34,16 @@
 #  CPPZMQ_FOUND              System has CPPZMQ header
 #  CPPZMQ_INCLUDE_DIRS       The location of zmq.hpp header
 
+# Try to find it in Config mode first
+find_package(CPPZMQ CONFIG NAMES cppzmq)
+if(CPPZMQ_FOUND)
+  message(STATUS "Found CPPZMQ via Config file: ${CPPZMQ_DIR}")
+  # Create an "alias" target for cppzmq::cppzmq
+  add_library(CPPZMQ::CPPZMQ INTERFACE IMPORTED)
+  target_link_libraries(CPPZMQ::CPPZMQ INTERFACE cppzmq::cppzmq)
+  return()
+endif()
+
 # If we cannot find the header, we will switch this to false
 set(CPPZMQ_FOUND true)
 
